@@ -22,7 +22,7 @@ export default function App() {
     
 
     <NavigationContainer>
-    <Stack.Navigator initialRouteName={user ? 'TodoList' : 'Signup'}>
+    <Stack.Navigator initialRouteName={user ? 'TodoList' : 'Login'}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="TodoList" component={TodoListScreen} />

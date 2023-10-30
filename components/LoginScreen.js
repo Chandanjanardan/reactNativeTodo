@@ -1,48 +1,66 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Button, Text } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
+  const [signupError, setSignupError] = useState('');
 
-  const handleLogin = () => {
-    // You should implement local user authentication logic here.
-    // Check if the username and password match a local database or data source.
-    // For this example, we'll use a simple hardcoded user.
-    if (username === 'user' && password === '123') {
-      navigation.navigate('TodoList');
-    } else {
-      setLoginError('Invalid username or password.');
+
+  async function handleSignup() {
+    try {
+      const response = await fetch("http://localhost:4000/register", {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body:JSON.stringify({username,password})
+      });
+      if(response.status===200){
+        alert("Registration successfull")
+        navigation.navigate('Login');
+       }else{
+        alert("Registration falied")
+      }
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }
+  console.log(username,password)
 
   return (
     <View style={styles.container}>
       <TextInput
+        style={styles.input}
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
       />
       <TextInput
+        style={styles.input}
         placeholder="Password"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
-      <Text style={{ color: 'red' }}>{loginError}</Text>
+      <Button title="Login" onPress={handleSignup} color="black" />
+      <Text style={{ color: 'red' }}>{signupError}</Text>
     </View>
   );
 };
 
-export default LoginScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  input: {
+    width: '80%',
+    height: 40,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
 });
+
+export default LoginScreen;

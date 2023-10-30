@@ -6,20 +6,25 @@ const SignupScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [signupError, setSignupError] = useState('');
 
+
   async function handleSignup() {
     try {
-      const response = await fetch("http://localhost:4000/test", {
-        method: 'GET',
+      const response = await fetch("http://localhost:4000/register", {
+        method: 'POST',
         headers: { "Content-Type": "application/json" },
+        body:JSON.stringify({username,password})
       });
-      const data = await response.json();
-
-      // Handle the response as needed
-      console.log(data.msg);
+      if(response.status===200){
+        alert("Registration successfull")
+        navigation.navigate('Login');
+       }else{
+        alert("Registration falied")
+      }
     } catch (error) {
       console.error(error);
     }
   }
+  console.log(username,password)
 
   return (
     <View style={styles.container}>
