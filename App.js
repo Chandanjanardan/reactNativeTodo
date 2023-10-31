@@ -6,8 +6,7 @@ import { StyleSheet, View, Text, Button } from 'react-native';
 import LoginScreen from './components/LoginScreen';
 import SignupScreen from './components/SignupScreen';
 import TodoListScreen from './components/TodoListScreen';
-import AddTaskScreen from './components/AddTaskScreen';
-import TaskDetailScreen from './components/TaskDetailScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +21,7 @@ export default function App() {
     
 
     <NavigationContainer>
-    <Stack.Navigator initialRouteName={user ? 'TodoList' : 'Login'}>
+    <Stack.Navigator initialRouteName={user ? 'TodoList' : 'Signup'}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="TodoList" component={TodoListScreen} />

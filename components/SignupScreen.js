@@ -6,28 +6,36 @@ const SignupScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [signupError, setSignupError] = useState('');
 
+  // Function to navigate to the login screen
+  const goToLogin = () => {
+    navigation.navigate('Login');
+  };
 
   async function handleSignup() {
     try {
       const response = await fetch("http://localhost:4000/register", {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({username,password})
+        body: JSON.stringify({ username, password }),
+        mode:'cors'
       });
-      if(response.status===200){
-        alert("Registration successfull")
+      if (response.status === 200) {
+        alert("Registration successful");
         navigation.navigate('Login');
-       }else{
-        alert("Registration falied")
+      } else {
+        alert("Registration failed");
       }
     } catch (error) {
       console.error(error);
     }
   }
-  console.log(username,password)
+
+  console.log(username, password);
 
   return (
     <View style={styles.container}>
+      <Text style={styles.heading}>Todo List</Text>
+      <Text style={styles.loginText}>Already have an account? <Text style={styles.loginLink} onPress={goToLogin}>Login</Text></Text>
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -45,6 +53,10 @@ const SignupScreen = ({ navigation }) => {
       <Text style={{ color: 'red' }}>{signupError}</Text>
     </View>
   );
+  
+    
+  
+  
 };
 
 const styles = StyleSheet.create({
@@ -52,6 +64,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  heading: {
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  loginText: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  loginLink: {
+    color: 'blue',
   },
   input: {
     width: '80%',
@@ -64,3 +87,5 @@ const styles = StyleSheet.create({
 });
 
 export default SignupScreen;
+
+

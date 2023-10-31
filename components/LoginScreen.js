@@ -1,30 +1,41 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const LoginScreen = ({ navigation }) => {
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [signupError, setSignupError] = useState('');
+  const [passwordError, setPasswordError] = useState(''); // Changed variable name
 
-
-  async function handleSignup() {
-    try {
-      const response = await fetch("http://localhost:4000/register", {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({username,password})
+  async function login(ev) {
+    ev.preventDefault();
+    const response = await fetch("http://localhost:4000/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+      headers: { "content-Type": "application/json" },
+      mode:'cors',
+      credentials: "include",
+    });
+    console.log(response)
+    if (response.status === 200) {
+      response.json().then(async (userInfo) => {
+        try {
+          await AsyncStorage.setItem('token', userInfo.token);
+          alert("Login successfull")
+          navigation.navigate('TodoList');
+          setUserInfo(userInfo);
+          console.log('Username:', userInfo.username);
+        } catch (error) {
+          console.error('Error storing token:', error);
+        }
       });
-      if(response.status===200){
-        alert("Registration successfull")
-        navigation.navigate('Login');
-       }else{
-        alert("Registration falied")
-      }
-    } catch (error) {
-      console.error(error);
+    } else {
+      alert("Wrogn credentail")
+      setPasswordError("Wrong credentials"); // Set the error message
     }
   }
-  console.log(username,password)
 
   return (
     <View style={styles.container}>
@@ -41,8 +52,8 @@ const LoginScreen = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleSignup} color="black" />
-      <Text style={{ color: 'red' }}>{signupError}</Text>
+      <Button title="Login" onPress={login} color="black" />
+      <Text style={{ color: 'red' }}>{passwordError}</Text> {/* Display passwordError */}
     </View>
   );
 };
